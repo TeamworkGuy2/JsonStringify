@@ -1,0 +1,12 @@
+{
+	"version" : "0.1.0",
+	"name" : "json-stringify",
+	"description" : "JSON stringify helper methods to create JSON strings, properties, objects, and arrays",
+	"homepage" : "https://github.com/TeamworkGuy2/JsonStringify",
+	"license" : "MIT",
+	"main" : "./bin/json_stringify.jar",
+	"dependencies" : {
+		"jfunc": "*",
+		"jtext-util": "*"
+	}
+}
