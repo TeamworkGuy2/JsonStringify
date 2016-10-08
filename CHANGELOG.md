@@ -4,7 +4,20 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.1.0](N/A) - 2016-10-01
+###[0.2.0](N/A) - 2016-10-08
+#### Added
+* JsonWritable interface with toJson() method for objects which can be converted to JSON
+* JsonStringify comma(), append(), indent(), toArray(), toStringArray(), toArrayConsume(), toProp(), propName(), and propNameUnquoted() with various overloads for most
+* A 'public static final JsonStringify inst' field to the no longer static JsonStringify as a default instance
+
+#### Changed
+Rebuilt JsonStringify as an instanced class (but with no fields making it thread save) to allow for method chaining:
+* Renamed JsonStringify toJsonProperty() -> toProperty()
+* Expanded JsonStringify join*() method generic parameter types
+
+
+--------
+###[0.1.0](https://github.com/TeamworkGuy2/JsonStringify/commit/b72db5682880abffedf4af40c08ad8d39129cc52) - 2016-10-01
 #### Added
 * Versioning of existing code.  Moved/renamed JsonWrite -> JsonStringify from jfile-io to this new library.
   * Renamed joinStr*() methods to join() and added 'escape' parameter
