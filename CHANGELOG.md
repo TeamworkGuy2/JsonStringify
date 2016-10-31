@@ -4,7 +4,13 @@ This project does its best to adhere to [Semantic Versioning](http://semver.org/
 
 
 --------
-###[0.2.0](N/A) - 2016-10-08
+###[0.2.1](N/A) - 2016-10-30
+#### Changed
+* Updated dependency jtext-util to latest version 0.11.1
+
+
+--------
+###[0.2.0](https://github.com/TeamworkGuy2/JsonStringify/commit/cf4cce0fe16b4477c72fc7f749aee2337a0b31e1) - 2016-10-08
 #### Added
 * JsonWritable interface with toJson() method for objects which can be converted to JSON
 * JsonStringify comma(), append(), indent(), toArray(), toStringArray(), toArrayConsume(), toProp(), propName(), and propNameUnquoted() with various overloads for most

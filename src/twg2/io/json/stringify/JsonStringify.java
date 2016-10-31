@@ -120,7 +120,7 @@ public final class JsonStringify {
 			if(obj != null) {
 				String str = obj.toString();
 				if(quote) { dst.append('"'); }
-				if(escape) { StringEscapeJson.toJsonString(str, 0, str.length(), dst); }
+				if(escape) { StringEscapeJson.toJsonString(str, dst); }
 				else { dst.append(str); }
 				if(quote) { dst.append('"'); }
 			}
@@ -155,7 +155,7 @@ public final class JsonStringify {
 			if(obj != null) {
 				String str = obj.toString();
 				if(quote) { dst.append('"'); }
-				if(escape) { StringEscapeJson.toJsonString(str, 0, str.length(), dst); }
+				if(escape) { StringEscapeJson.toJsonString(str, dst); }
 				else { dst.append(str); }
 				if(quote) { dst.append('"'); }
 			}
@@ -192,7 +192,7 @@ public final class JsonStringify {
 			if(obj != null) {
 				String str = toString.apply(obj);
 				if(quote) { dst.append('"'); }
-				if(escape) { StringEscapeJson.toJsonString(str, 0, str.length(), dst); }
+				if(escape) { StringEscapeJson.toJsonString(str, dst); }
 				else { dst.append(str); }
 				if(quote) { dst.append('"'); }
 			}
@@ -228,7 +228,7 @@ public final class JsonStringify {
 			if(obj != null) {
 				String str = toString.apply(obj);
 				if(quote) { dst.append('"'); }
-				if(escape) { StringEscapeJson.toJsonString(str, 0, str.length(), dst); }
+				if(escape) { StringEscapeJson.toJsonString(str, dst); }
 				else { dst.append(str); }
 				if(quote) { dst.append('"'); }
 			}
@@ -472,7 +472,7 @@ public final class JsonStringify {
 	public JsonStringify toProp(String propName, String value, StringBuilder dst)                 { try { return toProp(propName, value, (Appendable)dst); } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
 	public JsonStringify toProp(String propName, String value, Appendable dst) throws IOException {
 		dst.append('"').append(propName).append("\": \"");
-		StringEscapeJson.toJsonString(value, 0, value.length(), dst);
+		StringEscapeJson.toJsonString(value, dst);
 		dst.append('"');
 		return this;
 	}
