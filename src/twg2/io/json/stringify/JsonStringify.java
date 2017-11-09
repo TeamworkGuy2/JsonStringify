@@ -5,7 +5,8 @@ import java.io.UncheckedIOException;
 import java.util.Iterator;
 import java.util.List;
 
-import twg2.functions.IoFunc;
+import twg2.functions.ConsumerIo;
+import twg2.functions.FunctionIo;
 import twg2.text.stringEscape.StringEscapeJson;
 
 /**
@@ -17,9 +18,9 @@ public final class JsonStringify {
 
 
 	// ==== Function ====
-	/** Same as {@link #join(Iterable, String, boolean, StringBuilder, IoFunc.FunctionIo)} except all strings are JSON escaped first ({@link StringEscapeJson#toJsonString(String)})
+	/** Same as {@link #join(Iterable, String, boolean, StringBuilder, FunctionIo)} except all strings are JSON escaped first ({@link StringEscapeJson#toJsonString(String)})
 	 */
-	public <T extends Object> JsonStringify joinEscape(Iterable<? extends T> objs, String delimiter, StringBuilder dst, IoFunc.FunctionIo<T, String> toString) {
+	public <T extends Object> JsonStringify joinEscape(Iterable<? extends T> objs, String delimiter, StringBuilder dst, FunctionIo<T, String> toString) {
 		return join(objs, delimiter, true, dst, toString);
 	}
 
@@ -27,7 +28,7 @@ public final class JsonStringify {
 	/** Stringify a group of objects, but let a function convert the non-null objects to strings.  All this method does is write "null" for null values,
 	 * the returned {@code toString} strings, and the separator between elements
 	 */
-	public <T extends Object> JsonStringify join(Iterable<? extends T> objs, String delimiter, boolean escape, StringBuilder dst, IoFunc.FunctionIo<T, String> toString) {
+	public <T extends Object> JsonStringify join(Iterable<? extends T> objs, String delimiter, boolean escape, StringBuilder dst, FunctionIo<T, String> toString) {
 		try {
 			return join(objs, delimiter, escape, (Appendable)dst, toString);
 		} catch(IOException ioe) {
@@ -36,9 +37,9 @@ public final class JsonStringify {
 	}
 
 
-	/** Same as {@link #join(Iterable, String, boolean, Appendable, IoFunc.FunctionIo)} except all strings are JSON escaped first ({@link StringEscapeJson#toJsonString(String)})
+	/** Same as {@link #join(Iterable, String, boolean, Appendable, FunctionIo)} except all strings are JSON escaped first ({@link StringEscapeJson#toJsonString(String)})
 	 */
-	public <T extends Object> JsonStringify join(Iterable<? extends T> objs, String delimiter, Appendable dst, IoFunc.FunctionIo<T, String> toString) throws IOException {
+	public <T extends Object> JsonStringify join(Iterable<? extends T> objs, String delimiter, Appendable dst, FunctionIo<T, String> toString) throws IOException {
 		return join(objs, delimiter, true, dst, toString);
 	}
 
@@ -46,7 +47,7 @@ public final class JsonStringify {
 	/** Stringify a group of objects, but let a function convert the non-null objects to strings.  All this method does is write "null" for null values,
 	 * the returned {@code toString} strings, and the separator between elements
 	 */
-	public <T extends Object> JsonStringify join(Iterable<? extends T> objs, String delimiter, boolean escape, Appendable dst, IoFunc.FunctionIo<T, String> toString) throws IOException {
+	public <T extends Object> JsonStringify join(Iterable<? extends T> objs, String delimiter, boolean escape, Appendable dst, FunctionIo<T, String> toString) throws IOException {
 		boolean firstLoop = true;
 		for(T obj : objs) {
 			if(!firstLoop) {
@@ -67,7 +68,7 @@ public final class JsonStringify {
 
 	/** Stringify a group of objects, but let a consumer function write the non-null values.  All this method does is write "null" for null values and the separator between elements
 	 */
-	public <T extends Object> JsonStringify joinConsume(Iterable<? extends T> objs, String delimiter, StringBuilder dst, IoFunc.ConsumerIo<T> toString) {
+	public <T extends Object> JsonStringify joinConsume(Iterable<? extends T> objs, String delimiter, StringBuilder dst, ConsumerIo<T> toString) {
 		try {
 			return joinConsume(objs, delimiter, (Appendable)dst, toString);
 		} catch(IOException ioe) {
@@ -78,7 +79,7 @@ public final class JsonStringify {
 
 	/** Stringify a group of objects, but let a consumer function write the non-null values.  All this method does is write "null" for null values and the separator between elements
 	 */
-	public <T extends Object> JsonStringify joinConsume(Iterable<? extends T> objs, String delimiter, Appendable dst, IoFunc.ConsumerIo<T> toString) throws IOException {
+	public <T extends Object> JsonStringify joinConsume(Iterable<? extends T> objs, String delimiter, Appendable dst, ConsumerIo<T> toString) throws IOException {
 		boolean firstLoop = true;
 		for(T obj : objs) {
 			if(!firstLoop) {
@@ -170,18 +171,18 @@ public final class JsonStringify {
 
 
 	// object array Function
-	public <T extends Object> JsonStringify toStringArray(List<? extends T> vals,                             StringBuilder dst, IoFunc.FunctionIo<T, String> toString)                    { try { return toArray(vals, " ", true, true, dst, toString); } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
-	public <T extends Object> JsonStringify toStringArray(List<? extends T> vals, String whitespaceSeparator, StringBuilder dst, IoFunc.FunctionIo<T, String> toString)                    { try { return toArray(vals, whitespaceSeparator, true, true, dst, toString); } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
-	public <T extends Object> JsonStringify toStringArray(List<? extends T> vals,                             Appendable dst,    IoFunc.FunctionIo<T, String> toString) throws IOException { return toArray(vals, " ", true, true, dst, toString); }
-	public <T extends Object> JsonStringify toStringArray(List<? extends T> vals, String whitespaceSeparator, Appendable dst,    IoFunc.FunctionIo<T, String> toString) throws IOException { return toArray(vals, whitespaceSeparator, true, true, dst, toString); }
+	public <T extends Object> JsonStringify toStringArray(List<? extends T> vals,                             StringBuilder dst, FunctionIo<T, String> toString)                    { try { return toArray(vals, " ", true, true, dst, toString); } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toStringArray(List<? extends T> vals, String whitespaceSeparator, StringBuilder dst, FunctionIo<T, String> toString)                    { try { return toArray(vals, whitespaceSeparator, true, true, dst, toString); } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toStringArray(List<? extends T> vals,                             Appendable dst,    FunctionIo<T, String> toString) throws IOException { return toArray(vals, " ", true, true, dst, toString); }
+	public <T extends Object> JsonStringify toStringArray(List<? extends T> vals, String whitespaceSeparator, Appendable dst,    FunctionIo<T, String> toString) throws IOException { return toArray(vals, whitespaceSeparator, true, true, dst, toString); }
 
-	public <T extends Object> JsonStringify toArray(List<? extends T> vals,                             StringBuilder dst, IoFunc.FunctionIo<T, String> toString)                    { try { return toArray(vals, " ", false, false, dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
-	public <T extends Object> JsonStringify toArray(List<? extends T> vals, String whitespaceSeparator, StringBuilder dst, IoFunc.FunctionIo<T, String> toString)                    { try { return toArray(vals, whitespaceSeparator, false, false, dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
-	public <T extends Object> JsonStringify toArray(List<? extends T> vals,                             Appendable dst,    IoFunc.FunctionIo<T, String> toString) throws IOException { return toArray(vals, " ", false, false, dst, toString); }
-	public <T extends Object> JsonStringify toArray(List<? extends T> vals, String whitespaceSeparator, Appendable dst,    IoFunc.FunctionIo<T, String> toString) throws IOException { return toArray(vals, whitespaceSeparator, false, false, dst, toString); }
+	public <T extends Object> JsonStringify toArray(List<? extends T> vals,                             StringBuilder dst, FunctionIo<T, String> toString)                    { try { return toArray(vals, " ", false, false, dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toArray(List<? extends T> vals, String whitespaceSeparator, StringBuilder dst, FunctionIo<T, String> toString)                    { try { return toArray(vals, whitespaceSeparator, false, false, dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toArray(List<? extends T> vals,                             Appendable dst,    FunctionIo<T, String> toString) throws IOException { return toArray(vals, " ", false, false, dst, toString); }
+	public <T extends Object> JsonStringify toArray(List<? extends T> vals, String whitespaceSeparator, Appendable dst,    FunctionIo<T, String> toString) throws IOException { return toArray(vals, whitespaceSeparator, false, false, dst, toString); }
 
 	public <T extends Object> JsonStringify toArray(List<? extends T> vals, String whitespaceSeparator,
-			boolean quote, boolean escape, Appendable dst, IoFunc.FunctionIo<? super T, String> toString) throws IOException {
+			boolean quote, boolean escape, Appendable dst, FunctionIo<? super T, String> toString) throws IOException {
 		boolean firstLoop = true;
 		dst.append('[');
 		for(int i = 0, size = vals.size(); i < size; i++) {
@@ -206,18 +207,18 @@ public final class JsonStringify {
 	}
 
 
-	public <T extends Object> JsonStringify toStringArray(Iterable<? extends T> vals,                             StringBuilder dst, IoFunc.FunctionIo<T, String> toString)                    { try { return toArray(vals.iterator(), " ", true, true, dst, toString); } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
-	public <T extends Object> JsonStringify toStringArray(Iterable<? extends T> vals, String whitespaceSeparator, StringBuilder dst, IoFunc.FunctionIo<T, String> toString)                    { try { return toArray(vals.iterator(), whitespaceSeparator, true, true, dst, toString); } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
-	public <T extends Object> JsonStringify toStringArray(Iterable<? extends T> vals,                             Appendable dst,    IoFunc.FunctionIo<T, String> toString) throws IOException { return toArray(vals.iterator(), " ", true, true, dst, toString); }
-	public <T extends Object> JsonStringify toStringArray(Iterable<? extends T> vals, String whitespaceSeparator, Appendable dst,    IoFunc.FunctionIo<T, String> toString) throws IOException { return toArray(vals.iterator(), whitespaceSeparator, true, true, dst, toString); }
+	public <T extends Object> JsonStringify toStringArray(Iterable<? extends T> vals,                             StringBuilder dst, FunctionIo<T, String> toString)                    { try { return toArray(vals.iterator(), " ", true, true, dst, toString); } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toStringArray(Iterable<? extends T> vals, String whitespaceSeparator, StringBuilder dst, FunctionIo<T, String> toString)                    { try { return toArray(vals.iterator(), whitespaceSeparator, true, true, dst, toString); } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toStringArray(Iterable<? extends T> vals,                             Appendable dst,    FunctionIo<T, String> toString) throws IOException { return toArray(vals.iterator(), " ", true, true, dst, toString); }
+	public <T extends Object> JsonStringify toStringArray(Iterable<? extends T> vals, String whitespaceSeparator, Appendable dst,    FunctionIo<T, String> toString) throws IOException { return toArray(vals.iterator(), whitespaceSeparator, true, true, dst, toString); }
 
-	public <T extends Object> JsonStringify toArray(Iterable<? extends T> vals,                             StringBuilder dst, IoFunc.FunctionIo<T, String> toString)                    { try { return toArray(vals.iterator(), " ", false, false, dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
-	public <T extends Object> JsonStringify toArray(Iterable<? extends T> vals, String whitespaceSeparator, StringBuilder dst, IoFunc.FunctionIo<T, String> toString)                    { try { return toArray(vals.iterator(), whitespaceSeparator, false, false, dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
-	public <T extends Object> JsonStringify toArray(Iterable<? extends T> vals,                             Appendable dst,    IoFunc.FunctionIo<T, String> toString) throws IOException { return toArray(vals.iterator(), " ", false, false, dst, toString); }
-	public <T extends Object> JsonStringify toArray(Iterable<? extends T> vals, String whitespaceSeparator, Appendable dst,    IoFunc.FunctionIo<T, String> toString) throws IOException { return toArray(vals.iterator(), whitespaceSeparator, false, false, dst, toString); }
+	public <T extends Object> JsonStringify toArray(Iterable<? extends T> vals,                             StringBuilder dst, FunctionIo<T, String> toString)                    { try { return toArray(vals.iterator(), " ", false, false, dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toArray(Iterable<? extends T> vals, String whitespaceSeparator, StringBuilder dst, FunctionIo<T, String> toString)                    { try { return toArray(vals.iterator(), whitespaceSeparator, false, false, dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toArray(Iterable<? extends T> vals,                             Appendable dst,    FunctionIo<T, String> toString) throws IOException { return toArray(vals.iterator(), " ", false, false, dst, toString); }
+	public <T extends Object> JsonStringify toArray(Iterable<? extends T> vals, String whitespaceSeparator, Appendable dst,    FunctionIo<T, String> toString) throws IOException { return toArray(vals.iterator(), whitespaceSeparator, false, false, dst, toString); }
 
 	public <T extends Object> JsonStringify toArray(Iterator<? extends T> vals, String whitespaceSeparator,
-			boolean quote, boolean escape, Appendable dst, IoFunc.FunctionIo<? super T, String> toString) throws IOException {
+			boolean quote, boolean escape, Appendable dst, FunctionIo<? super T, String> toString) throws IOException {
 		boolean firstLoop = true;
 		dst.append('[');
 		while(vals.hasNext()) {
@@ -243,11 +244,11 @@ public final class JsonStringify {
 
 
 	// object array Consumer
-	public <T extends Object> JsonStringify toArrayConsume(List<? extends T> vals,                             StringBuilder dst, IoFunc.ConsumerIo<T> toString)                    { try { return toArrayConsume(vals, " ", (Appendable)dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
-	public <T extends Object> JsonStringify toArrayConsume(List<? extends T> vals, String whitespaceSeparator, StringBuilder dst, IoFunc.ConsumerIo<T> toString)                    { try { return toArrayConsume(vals, whitespaceSeparator, (Appendable)dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toArrayConsume(List<? extends T> vals,                             StringBuilder dst, ConsumerIo<T> toString)                    { try { return toArrayConsume(vals, " ", (Appendable)dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toArrayConsume(List<? extends T> vals, String whitespaceSeparator, StringBuilder dst, ConsumerIo<T> toString)                    { try { return toArrayConsume(vals, whitespaceSeparator, (Appendable)dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
 
-	public <T extends Object> JsonStringify toArrayConsume(List<? extends T> vals,                             Appendable dst,    IoFunc.ConsumerIo<T> toString) throws IOException { return toArrayConsume(vals, " ", dst, toString); }
-	public <T extends Object> JsonStringify toArrayConsume(List<? extends T> vals, String whitespaceSeparator, Appendable dst,    IoFunc.ConsumerIo<T> toString) throws IOException {
+	public <T extends Object> JsonStringify toArrayConsume(List<? extends T> vals,                             Appendable dst,    ConsumerIo<T> toString) throws IOException { return toArrayConsume(vals, " ", dst, toString); }
+	public <T extends Object> JsonStringify toArrayConsume(List<? extends T> vals, String whitespaceSeparator, Appendable dst,    ConsumerIo<T> toString) throws IOException {
 		boolean firstLoop = true;
 		dst.append('[');
 		for(int i = 0, size = vals.size(); i < size; i++) {
@@ -268,13 +269,13 @@ public final class JsonStringify {
 	}
 
 
-	public <T extends Object> JsonStringify toArrayConsume(Iterable<? extends T> vals,                             StringBuilder dst, IoFunc.ConsumerIo<T> toString)                    { try { return toArrayConsume(vals.iterator(), " ", dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
-	public <T extends Object> JsonStringify toArrayConsume(Iterable<? extends T> vals, String whitespaceSeparator, StringBuilder dst, IoFunc.ConsumerIo<T> toString)                    { try { return toArrayConsume(vals.iterator(), whitespaceSeparator, dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toArrayConsume(Iterable<? extends T> vals,                             StringBuilder dst, ConsumerIo<T> toString)                    { try { return toArrayConsume(vals.iterator(), " ", dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
+	public <T extends Object> JsonStringify toArrayConsume(Iterable<? extends T> vals, String whitespaceSeparator, StringBuilder dst, ConsumerIo<T> toString)                    { try { return toArrayConsume(vals.iterator(), whitespaceSeparator, dst, toString);  } catch(IOException ioe) { throw new UncheckedIOException(ioe); } }
 
-	public <T extends Object> JsonStringify toArrayConsume(Iterable<? extends T> vals,                             Appendable dst,    IoFunc.ConsumerIo<T> toString) throws IOException { return toArrayConsume(vals.iterator(), " ", dst, toString); }
-	public <T extends Object> JsonStringify toArrayConsume(Iterable<? extends T> vals, String whitespaceSeparator, Appendable dst,    IoFunc.ConsumerIo<T> toString) throws IOException { return toArrayConsume(vals.iterator(), whitespaceSeparator, dst, toString); }
+	public <T extends Object> JsonStringify toArrayConsume(Iterable<? extends T> vals,                             Appendable dst,    ConsumerIo<T> toString) throws IOException { return toArrayConsume(vals.iterator(), " ", dst, toString); }
+	public <T extends Object> JsonStringify toArrayConsume(Iterable<? extends T> vals, String whitespaceSeparator, Appendable dst,    ConsumerIo<T> toString) throws IOException { return toArrayConsume(vals.iterator(), whitespaceSeparator, dst, toString); }
 
-	public <T extends Object> JsonStringify toArrayConsume(Iterator<? extends T> vals, String whitespaceSeparator, Appendable dst, IoFunc.ConsumerIo<? super T> toString) throws IOException {
+	public <T extends Object> JsonStringify toArrayConsume(Iterator<? extends T> vals, String whitespaceSeparator, Appendable dst, ConsumerIo<? super T> toString) throws IOException {
 		boolean firstLoop = true;
 		dst.append('[');
 		while(vals.hasNext()) {
